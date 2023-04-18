@@ -9,24 +9,32 @@ def run_planning():
     planner=CEMPlanner()
 
     env = gym.make("Pendulum-v1", render_mode="human")
-    observation, info = env.reset(seed=42)
+    observation, info = env.reset(seed=41)
 
     belief_model = PendulumModel()
 
     reward_buffer=[]
-    for _ in range(100):
+    action_buffer=[]
+    for _ in range(50):
         action = planner.act_plan(belief_model,observation)
         print("std",planner.sigma.max())
         observation, reward, terminated, truncated, info = env.step(action)
         # if terminated or truncated:
         #     observation, info = env.reset()
         reward_buffer.append(reward)
+        action_buffer.append(action)
         planner.reset()
     env.close()
     plt.plot(reward_buffer)
     plt.xlabel("step")
     plt.ylabel("reward")
     plt.title("reward curve with step")
+    plt.show()
+
+    plt.plot(action_buffer)
+    plt.xlabel("step")
+    plt.ylabel("action")
+    plt.title("action curve with step")
     plt.show()
 
 # 按间距中的绿色按钮以运行脚本。
