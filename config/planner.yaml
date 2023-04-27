@@ -1,5 +1,5 @@
 action_dim: 1
 horizon: 20
-max_iter: 40
+max_iter: 10
 random_sample: 20
 elite_sample: 10

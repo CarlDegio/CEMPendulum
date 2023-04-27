@@ -4,6 +4,24 @@ from pendulum_model import PendulumModel
 from CEM import CEMPlanner
 import numpy as np
 import matplotlib.pyplot as plt
+import time
+def draw_reward(reward_buffer):
+    plt.plot(reward_buffer)
+    plt.xlabel("step")
+    plt.ylabel("reward")
+    plt.title("reward curve with step")
+    plt.show()
+
+def draw_action(action_buffer):
+    plt.plot(action_buffer, label='torque')
+    plt.axhline(y=2, color='r', linestyle='--')
+    plt.axhline(y=-2, color='r', linestyle='--')
+    plt.xlabel("step")
+    plt.ylabel("action(N.m)")
+    plt.title("action curve with step")
+    plt.legend()
+    plt.show()
+
 
 def run_planning():
     planner=CEMPlanner()
@@ -15,7 +33,8 @@ def run_planning():
 
     reward_buffer=[]
     action_buffer=[]
-    for _ in range(50):
+    for _ in range(100):
+        start_time=time.time()
         action = planner.act_plan(belief_model,observation)
         print("std",planner.sigma.max())
         observation, reward, terminated, truncated, info = env.step(action)
@@ -24,18 +43,12 @@ def run_planning():
         reward_buffer.append(reward)
         action_buffer.append(action)
         planner.reset()
+        end_time = time.time()
+        print("time",end_time-start_time)
     env.close()
-    plt.plot(reward_buffer)
-    plt.xlabel("step")
-    plt.ylabel("reward")
-    plt.title("reward curve with step")
-    plt.show()
 
-    plt.plot(action_buffer)
-    plt.xlabel("step")
-    plt.ylabel("action")
-    plt.title("action curve with step")
-    plt.show()
+    draw_reward(reward_buffer)
+    draw_action(action_buffer)
 
 # 按间距中的绿色按钮以运行脚本。
 if __name__ == '__main__':
