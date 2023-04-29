@@ -41,7 +41,7 @@ class CEMPlanner:
         self.mu = np.mean(select_action, axis=0)
         self.sigma = np.std(select_action, axis=0)
 
-    def act_plan(self,env: PendulumModel, observation_now):
+    def act_plan(self, env: PendulumModel, observation_now):
         for i in range(self.cfg.max_iter):
             self.sample_action()
             self.evaluate_action(env, observation_now)
@@ -50,5 +50,7 @@ class CEMPlanner:
         return self.mu[0]
 
     def reset(self):
-        self.mu = np.zeros((self.cfg.horizon, self.cfg.action_dim), dtype=np.float32)
+        # self.mu = np.zeros((self.cfg.horizon, self.cfg.action_dim), dtype=np.float32)
+        self.mu = np.vstack([self.mu[1:], np.zeros((1, self.cfg.action_dim), dtype=np.float32)])
+        self.mu=np.clip(self.mu,-2,2)
         self.sigma = np.ones((self.cfg.horizon, self.cfg.action_dim), dtype=np.float32)

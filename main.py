@@ -33,15 +33,17 @@ def run_planning():
 
     reward_buffer=[]
     action_buffer=[]
+    action_std_buffer=[]
     for _ in range(100):
         start_time=time.time()
         action = planner.act_plan(belief_model,observation)
-        print("std",planner.sigma.max())
+        print("std",planner.sigma,"mean",planner.mu)
         observation, reward, terminated, truncated, info = env.step(action)
         # if terminated or truncated:
         #     observation, info = env.reset()
         reward_buffer.append(reward)
         action_buffer.append(action)
+        action_std_buffer.append(planner.sigma[0])
         planner.reset()
         end_time = time.time()
         print("time",end_time-start_time)
