@@ -5,20 +5,23 @@ from CEM import CEMPlanner
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+plt.rcParams['font.family'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+
 def draw_reward(reward_buffer):
     plt.plot(reward_buffer)
-    plt.xlabel("step")
-    plt.ylabel("reward")
-    plt.title("reward curve with step")
+    plt.xlabel("交互步")
+    plt.ylabel("奖励")
+    plt.title("单步奖励曲线")
     plt.show()
 
 def draw_action(action_buffer):
     plt.plot(action_buffer, label='torque')
     plt.axhline(y=2, color='r', linestyle='--')
     plt.axhline(y=-2, color='r', linestyle='--')
-    plt.xlabel("step")
-    plt.ylabel("action(N.m)")
-    plt.title("action curve with step")
+    plt.xlabel("交互步")
+    plt.ylabel("控制扭矩(N.m)")
+    plt.title("控制扭矩曲线")
     plt.legend()
     plt.show()
 
@@ -37,7 +40,7 @@ def run_planning():
     for _ in range(100):
         start_time=time.time()
         action = planner.act_plan(belief_model,observation)
-        print("std",planner.sigma,"mean",planner.mu)
+        # print("std",planner.sigma,"mean",planner.mu)
         observation, reward, terminated, truncated, info = env.step(action)
         # if terminated or truncated:
         #     observation, info = env.reset()

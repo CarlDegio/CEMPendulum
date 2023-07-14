@@ -50,7 +50,7 @@ class CEMPlanner:
         return self.mu[0]
 
     def reset(self):
-        # self.mu = np.zeros((self.cfg.horizon, self.cfg.action_dim), dtype=np.float32)
-        self.mu = np.vstack([self.mu[1:], np.zeros((1, self.cfg.action_dim), dtype=np.float32)])
-        self.mu=np.clip(self.mu,-2,2)
+        self.mu = np.zeros((self.cfg.horizon, self.cfg.action_dim), dtype=np.float32)
+        # self.mu = np.vstack([self.mu[1:], np.zeros((1, self.cfg.action_dim), dtype=np.float32)])
+        # self.mu=np.clip(self.mu,-2,2)
         self.sigma = np.ones((self.cfg.horizon, self.cfg.action_dim), dtype=np.float32)
